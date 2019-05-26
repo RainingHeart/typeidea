@@ -1,8 +1,10 @@
 from django.contrib import admin
+from django.contrib.admin.models import LogEntry
 from django.urls import reverse
 from django.utils.html import format_html
 
 from typeidea.custom_site import custom_site
+from typeidea.base_admin import BaseOwnerAdmin
 from .models import Post, Category, Tag
 from .adminforms import PostAdminForm
 # Register your models here.
@@ -25,9 +27,7 @@ class CategoryOwnerFilter(admin.SimpleListFilter):
 
 
 @admin.register(Post, site=custom_site)
-class PostAdmin(admin.ModelAdmin):
-    def has_add_permission(self, request):
-        pass
+class PostAdmin(BaseOwnerAdmin):
     form = PostAdminForm
     list_display = [
         'title', 'category', 'status',
@@ -86,14 +86,6 @@ class PostAdmin(admin.ModelAdmin):
         )
     operator.short_description = '操作'
 
-    def save_model(self, request, obj, form, change):
-        obj.owner = request.user
-        return super(PostAdmin, self).save_model(request, obj, form, change)
-
-    def get_queryset(self, request):
-        qs = super(PostAdmin, self).get_queryset(request)
-        return qs.filter(owner=request.user)
-
     # class Media:
     #     css = {
     #         'all': ('https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css',),
@@ -101,14 +93,14 @@ class PostAdmin(admin.ModelAdmin):
     #     js = ('https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/js/bootstrap.bundle.js',)
 
 
-class PostInline(admin.TabularInline):  # StackedInline 样式不同
+class PostInline(admin.TabularInline):  # 可选择继承自 admin.StackedInline, 以获取不同的展示样式
     fields = ('title', 'desc')
     extra = 1  # 控制额外多几个
     model = Post
 
 
 @admin.register(Category, site=custom_site)
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(BaseOwnerAdmin):
     inlines = [PostInline]
     list_display = ('name', 'status', 'is_nav', 'created_time', 'post_count')
     fields = ('name', 'status', 'is_nav')
@@ -117,13 +109,9 @@ class CategoryAdmin(admin.ModelAdmin):
         return obj.post_set.count()
     post_count.short_description = '文章数量'
 
-    def save_model(self, request, obj, form, change):
-        obj.owner = request.user
-        return super(CategoryAdmin, self).save_model(request, obj, form, change)
-
 
 @admin.register(Tag, site=custom_site)
-class TagAdmin(admin.ModelAdmin):
+class TagAdmin(BaseOwnerAdmin):
     list_display = ('name', 'status', 'created_time', 'post_count')
     fields = ('name', 'status')
 
@@ -131,6 +119,7 @@ class TagAdmin(admin.ModelAdmin):
         return obj.post_set.count()
     post_count.short_description = '文章数量'
 
-    def save_model(self, request, obj, form, change):
-        obj.owner = request.user
-        return super(TagAdmin, self).save_model(request, obj, form, change)
+
+@admin.register(LogEntry, site=custom_site)
+class LogEntryAdmin(admin.ModelAdmin):
+    list_display = ('object_repr', 'object_id', 'action_flag', 'user', 'change_message')
