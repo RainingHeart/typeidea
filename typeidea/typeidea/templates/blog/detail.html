@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>detail</title>
-</head>
-<body>
+{% extends "./base.html" %}
+
+{% block title %}
+    {{ post.title }}
+{% endblock %}
+
+{% block main %}
     {% if post %}
     <h1>{{ post.title }}</h1>
     <div>
@@ -12,7 +12,8 @@
         <span>作者：{{ post.owner.username }}</span>
     </div>
     <hr>
-    <p>{{ post.content }}</p>
+    <p>
+        {{ post.content }}
+    </p>
     {% endif %}
-</body>
-</html>
+{% endblock %}

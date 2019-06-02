@@ -1,14 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>list</title>
-</head>
-<body>
+{% extends "./base.html" %}
+
+{% block title %}
+    {% if tag %}
+    标签页： {{ tag.name }}
+    {% endif %}
+
+    {% if category %}
+    分类页： {{ category.name }}
+    {% endif %}
+{% endblock %}
+
+{% block main %}
     <ul>
         {% for post in post_list %}
         <li>
-            <a href="/post/{{ post.id }}.html">{{ post.title }}</a>
+            <a href="{% url 'post-detail' post.id %}">{{ post.title }}</a>
             <div>
                 <span>作者：{{ post.owner.username }}</span>
                 <span>分类：{{ post.category.name }}</span>
@@ -17,5 +23,4 @@
         </li>
         {% endfor %}
     </ul>
-</body>
-</html>
+{% endblock %}
