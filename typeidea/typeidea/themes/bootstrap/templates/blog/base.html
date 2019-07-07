@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!--{% load static %}-->
+{% load static %}
 <html lang="en">
 <head>
     <title>{% block title %}首页{% endblock %}- typeidea 博客系统</title>
@@ -11,6 +11,8 @@
             margin-bottom: 5px;
         }
     </style>
+    {% block extra_head %}
+    {% endblock %}
 </head>
 <body>
     <div class="container head">
@@ -24,8 +26,8 @@
                     </li>
                     {% endfor %}
                 </ul>
-                <form class="form-inline my-2 my-lg-0" action="GET">
-                    <input type="search" placeholder="Search" aria-label="Search" class="form-control mr-sm-2">
+                <form class="form-inline" action="/search/" method="GET">
+                    <input type="search" placeholder="Search" aria-label="Search" class="form-control" name="keyword">
                     <button class="btn btn-outline-success" type="submit">搜索</button>
                 </form>
             </div>

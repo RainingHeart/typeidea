@@ -1,7 +1,15 @@
 {% extends "./base.html" %}
+{% load static %}
+{% load comment_block %}
 
 {% block title %}
     {{ post.title }}
+{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/googlecode.min.css' %}">
+<script src="{% static 'js/highlight.min.js' %}"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 {% endblock %}
 
 {% block main %}
@@ -13,7 +21,12 @@
     </div>
     <hr>
     <p>
-        {{ post.content }}
+        {% autoescape off %}
+        {{ post.content_html }}
+        {% endautoescape %}
     </p>
     {% endif %}
+
+    {% comment_block request.path %}
+
 {% endblock %}
