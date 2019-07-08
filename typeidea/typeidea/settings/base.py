@@ -32,6 +32,8 @@ INSTALLED_APPS = [
     'blog',
     'config',
     'comment',
+    'xadmin',
+    'crispy_forms',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -118,3 +120,6 @@ STATIC_ROOT = '/tmp/static'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'themes', THEME, 'static'),
 ]
+
+XADMIN_TITLE = 'Typeidea管理后台'
+XADMIN_FOOTER_TITLE = 'power by the5fire.com'
