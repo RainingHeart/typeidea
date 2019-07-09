@@ -20,7 +20,7 @@ class TagAutocomplete(autocomplete.Select2QuerySetView):
         if not self.request.user.is_authenticated():
             return Tag.objects.none()
 
-        qs = Tag.objectss.filter(owner=self.request.user)
+        qs = Tag.objects.filter(owner=self.request.user)
 
         if self.q:
             qs = qs.filter(name__istartswith=self.q)
