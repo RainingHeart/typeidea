@@ -14,6 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 import xadmin
+from rest_framework.routers import DefaultRouter
+from rest_framework.documentation import include_docs_urls
 
 from django.conf import settings
 from django.conf.urls import url, include
@@ -26,10 +28,21 @@ from blog.views import (
     PostDetailView, SearchView, AuthorView)
 from blog.rss import LatestPostFeed
 from blog.sitemap import PostSitemap
+from blog.apis import PostViewSet, CategoryViewSet, TagViewSet
 from comment.views import CommentView
+from comment.apis import CommentViewSet
 from config.views import LinkListView
+from config.apis import LinkViewSet, SideBarViewSet
 from .autocomplete import CategoryAutocomplete, TagAutocomplete
 
+
+router = DefaultRouter()
+router.register(r'post', PostViewSet, base_name='api-post')
+router.register(r'category', CategoryViewSet, base_name='api-category')
+router.register(r'tag', TagViewSet, base_name='api-tag')
+router.register(r'comment', CommentViewSet, base_name='api-comment')
+router.register(r'link', LinkViewSet, base_name='api-link')
+router.register(r'sidebar', SideBarViewSet, base_name='api-sidebar')
 
 urlpatterns = [
     url(r'^$', IndexView.as_view(), name='index'),
@@ -47,4 +60,6 @@ urlpatterns = [
     url(r'^category-autocomplete/$', CategoryAutocomplete.as_view(), name='category-autocomplete'),
     url(r'^tag-autocomplete/$', TagAutocomplete.as_view(), name='tag-autocomplete'),
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
+    url(r'^api/', include(router.urls)),
+    url(r'^api/docs/', include_docs_urls(title='typeidea apis')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -2,11 +2,9 @@ from datetime import date
 
 from django.core.cache import cache
 from django.db.models import Q, F
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, DetailView
 
-from comment.forms import CommentForm
-from comment.models import Comment
 from config.models import SideBar
 from .models import Post, Tag, Category
 # Create your views here.
