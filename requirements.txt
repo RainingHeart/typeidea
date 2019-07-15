@@ -7,4 +7,6 @@ django-ckeditor==5.4.0
 pillow==5.1.0
 djangorestframework==3.8.2
 coreapi==2.3.3
+djdt_flamegraph==0.2.12
+pympler==0.5
 
