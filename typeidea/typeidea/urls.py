@@ -22,6 +22,7 @@ from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.sitemaps import views as sitemap_views
+from django.views.decorators.cache import cache_page
 
 from blog.views import (
     IndexView, CategoryView, TagView,
